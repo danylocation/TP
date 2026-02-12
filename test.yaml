@@ -1,0 +1,24 @@
+name: CI - Tests HTML
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Validation Syntaxique
+        # Utilisation de tidy pour vérifier que le HTML est valide
+        run: |
+          sudo apt-get install -y tidy
+          tidy -e index.html
+
+      - name: Vérification du contenu critique
+        # On s'assure que les éléments demandés sont présents [cite: 65, 68]
+        run: |
+          grep -q "<h1>TP DevOps</h1>" index.html
+          grep -q "La page s'affiche normalement" index.html

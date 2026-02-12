@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Eval DevOps</title>
+</head>
+<body>
+    <h1>TP DevOps</h1>
+    <p>Page web simple</p>
+    <div style="color:blue;">La page s'affiche normalement</div>
+</body>
+</html>
