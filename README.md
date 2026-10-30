@@ -4,7 +4,7 @@ Projet individuel, Master 2 DATA, INGETIS. Auteur : ABDUL MALAK Dany.
 
 Dépôt Git : https://github.com/danylocation/TP
 
-Le projet charge le fichier `Superstore.csv` dans Snowflake, le nettoie avec dbt et produit trois tables agrégées pour l'analyse commerciale. Ces tables alimentent ensuite un dashboard Power BI.
+Le projet charge le fichier `Superstore.csv` dans Snowflake, le nettoie avec dbt et produit trois tables agrégées pour l'analyse commerciale. Ces tables alimentent ensuite un tableau de bord.
 
 ## Architecture
 
@@ -28,6 +28,8 @@ SUPERSTORE_DB
 | `snowflake/01_setup_et_chargement_raw.sql` | Création de la base, des schémas, du stage et de `RAW.SALES`, chargement et vérifications |
 | `snowflake/charger_raw.py` | Exécute le script SQL ci-dessus, y compris la commande `PUT` |
 | `snowflake/02_verifications.sql` | Requêtes de contrôle des trois couches après `dbt build` |
+| `snowflake/03_dashboard_streamlit.sql`, `snowflake/deployer_dashboard.py` | Déploiement du tableau de bord dans Snowflake |
+| `dashboard/streamlit_app.py` | Tableau de bord (Streamlit in Snowflake) sur les tables GOLD |
 | `superstore_dbt/` | Projet dbt : modèles SILVER et GOLD, tests, macros |
 | `superstore_dbt/profiles.yml.example` | Modèle de connexion dbt, sans secret |
 | `captures/` | Captures d'écran des tables, des tests et du dashboard |
@@ -126,16 +128,24 @@ Résultats obtenus dans Snowflake :
 
 À retenir : Furniture fait le deuxième chiffre d'affaires mais seulement 2,5 % de marge, et la région Central a la marge la plus faible.
 
-### 5. Dashboard Power BI
+### 5. Tableau de bord
 
-Le dashboard se connecte à Snowflake (connecteur natif) et n'utilise que les trois tables de `GOLD` :
+Power BI Desktop n'existe pas sous macOS, et mon compte Microsoft de l'école ne donne pas accès à Power BI en ligne. J'ai donc réalisé le tableau de bord avec **Streamlit in Snowflake**, dans le même compte que l'entrepôt. Il lit uniquement les trois tables de `GOLD` et reprend les visuels demandés :
 
-- deux cartes, pour le chiffre d'affaires total et le bénéfice total ;
-- un histogramme des ventes par région ;
-- un histogramme des ventes par catégorie ;
-- une courbe de l'évolution mensuelle du chiffre d'affaires et du bénéfice.
+- le chiffre d'affaires total et le bénéfice total, en indicateurs, avec le nombre de commandes et la marge ;
+- un histogramme des ventes par région (`AGG_SALES_BY_REGION`) ;
+- un histogramme des ventes par catégorie (`AGG_SALES_BY_CATEGORY`) ;
+- une courbe de l'évolution mensuelle du chiffre d'affaires et du bénéfice (`AGG_MONTHLY_SALES`).
 
-Les captures sont dans `captures/`.
+Le code est dans `dashboard/streamlit_app.py`. Le script `snowflake/03_dashboard_streamlit.sql`, exécuté par `python snowflake/deployer_dashboard.py`, le déploie sous le nom `SUPERSTORE_DB.PUBLIC.DASHBOARD_SUPERSTORE`. Dans Snowsight, l'application s'ouvre depuis **Projects → Streamlit**.
+
+Pour reproduire le même tableau dans Power BI Desktop, il faut :
+
+1. choisir **Obtenir les données → Snowflake**, avec le serveur `<compte>.snowflakecomputing.com` et l'entrepôt `SUPERSTORE_WH` ;
+2. sélectionner les trois tables de `SUPERSTORE_DB.GOLD` en mode Import ;
+3. créer deux cartes, avec la somme de `TOTAL_SALES` et celle de `TOTAL_PROFIT` de `AGG_SALES_BY_REGION` ;
+4. créer deux histogrammes groupés, `REGION` / `TOTAL_SALES` et `CATEGORY` / `TOTAL_SALES` ;
+5. créer un graphique en courbes avec `ORDER_MONTH` en axe, et `TOTAL_SALES` et `TOTAL_PROFIT` en valeurs.
 
 ## Captures d'écran
 
@@ -146,6 +156,8 @@ Les captures sont dans `captures/`.
 | `captures/03_tables_gold.png` | Les 3 tables agrégées du schéma `GOLD` |
 | `captures/04_table_raw_sales.png` | `RAW.SALES` : 9 994 lignes, colonnes du CSV en texte |
 | `captures/05_table_silver_curation_sales.png` | `SILVER.CURATION_SALES` : 9 993 lignes, colonnes en snake_case typées |
+| `captures/06_dashboard_indicateurs_region_categorie.png` | Tableau de bord : CA et bénéfice totaux, ventes par région et par catégorie |
+| `captures/07_dashboard_evolution_mensuelle.png` | Tableau de bord : évolution mensuelle du CA et du bénéfice |
 
 ## Reproduire le projet
 
