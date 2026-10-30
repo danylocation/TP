@@ -2,7 +2,7 @@
 
 Projet individuel, Master 2 DATA, INGETIS. Auteur : ABDUL MALAK Dany.
 
-Dépôt Git : `<lien du dépôt à ajouter>`
+Dépôt Git : https://github.com/danylocation/TP
 
 Le projet charge le fichier `Superstore.csv` dans Snowflake, le nettoie avec dbt et produit trois tables agrégées pour l'analyse commerciale. Ces tables alimentent ensuite un dashboard Power BI.
 
