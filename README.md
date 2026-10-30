@@ -137,6 +137,16 @@ Le dashboard se connecte à Snowflake (connecteur natif) et n'utilise que les tr
 
 Les captures sont dans `captures/`.
 
+## Captures d'écran
+
+| Fichier | Contenu |
+| --- | --- |
+| `captures/01_tests_dbt.png` | `dbt test` sur Snowflake : 16 tests, `PASS=16 WARN=0 ERROR=0` |
+| `captures/02_schemas_snowflake.png` | Base `SUPERSTORE_DB` et ses schémas `RAW`, `SILVER`, `GOLD` |
+| `captures/03_tables_gold.png` | Les 3 tables agrégées du schéma `GOLD` |
+| `captures/04_table_raw_sales.png` | `RAW.SALES` : 9 994 lignes, colonnes du CSV en texte |
+| `captures/05_table_silver_curation_sales.png` | `SILVER.CURATION_SALES` : 9 993 lignes, colonnes en snake_case typées |
+
 ## Reproduire le projet
 
 Prérequis : Python 3.10 ou plus récent, et un compte Snowflake avec le rôle `SYSADMIN`.
