@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw
+    database: SUPERSTORE_DB
+    schema: RAW
+    description: Couche brute, chargee par snowflake/01_setup_et_chargement_raw.sql
+    tables:
+      - name: sales
+        identifier: SALES
+        description: Copie fidele de Superstore.csv, toutes les colonnes en texte.
+        columns:
+          - name: Row ID
+            quote: true
+            data_tests:
+              - not_null

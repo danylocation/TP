@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: curation_sales
+    description: >
+      Ventes Superstore nettoyees : colonnes en snake_case, dates et montants
+      types, valeurs nulles traitees, doublons retires, delai de livraison calcule.
+      Une ligne par ligne de commande.
+    columns:
+      - name: row_id
+        description: Identifiant de la ligne dans le fichier source.
+        data_tests:
+          - not_null          # test 1
+          - unique            # test 2
+      - name: order_id
+        description: Identifiant de la commande (plusieurs lignes par commande).
+        data_tests:
+          - not_null          # test 3
+      - name: order_date
+        description: Date de commande.
+        data_tests:
+          - not_null
+      - name: ship_date
+        description: Date d'expedition.
+      - name: delivery_days
+        description: Delai de livraison en jours (ship_date - order_date).
+      - name: region
+        description: Region des Etats-Unis.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Central', 'East', 'South', 'West']
+      - name: category
+        description: Categorie du produit.
+      - name: sales
+        description: Montant de la vente en dollars.
+      - name: quantity
+        description: Quantite vendue.
+        data_tests:
+          - strictly_positive # test 4
+      - name: discount
+        description: Remise appliquee, entre 0 et 1.
+        data_tests:
+          - value_between:    # test 5
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: profit
+        description: Benefice (negatif en cas de perte).

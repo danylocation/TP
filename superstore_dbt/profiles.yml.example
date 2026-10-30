@@ -1,0 +1,17 @@
+# A copier dans ~/.dbt/profiles.yml puis completer (aucun secret dans le depot).
+# Authentification par paire de cles : la cle privee reste sur le poste,
+# la cle publique est enregistree sur l'utilisateur Snowflake
+# (ALTER USER <utilisateur> SET RSA_PUBLIC_KEY = '...').
+superstore:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "<identifiant_compte>"      # ex. abcdefg-xy12345
+      user: "<utilisateur>"
+      private_key_path: "/chemin/absolu/vers/superstore_rsa_key.p8"   # dbt ne developpe pas ~
+      role: SYSADMIN
+      warehouse: SUPERSTORE_WH
+      database: SUPERSTORE_DB
+      schema: SILVER
+      threads: 4

@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: agg_sales_by_region
+    description: Chiffre d'affaires, benefice et nombre de commandes par region.
+    columns:
+      - name: region
+        data_tests: [not_null, unique]
+      - name: total_sales
+        description: Chiffre d'affaires total en dollars.
+      - name: total_profit
+        description: Benefice total en dollars.
+      - name: nb_orders
+        description: Nombre de commandes distinctes.
+      - name: profit_margin
+        description: Benefice / chiffre d'affaires.
+
+  - name: agg_sales_by_category
+    description: Chiffre d'affaires, benefice et quantite vendue par categorie.
+    columns:
+      - name: category
+        data_tests: [not_null, unique]
+      - name: total_sales
+      - name: total_profit
+      - name: total_quantity
+        description: Nombre d'articles vendus.
+      - name: profit_margin
+
+  - name: agg_monthly_sales
+    description: Chiffre d'affaires, benefice et nombre de commandes par mois.
+    columns:
+      - name: order_month
+        description: Premier jour du mois de commande.
+        data_tests: [not_null, unique]
+      - name: total_sales
+      - name: total_profit
+      - name: nb_orders

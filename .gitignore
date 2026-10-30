@@ -1,0 +1,11 @@
+superstore_dbt/target/
+superstore_dbt/dbt_packages/
+superstore_dbt/logs/
+logs/
+.venv/
+__pycache__/
+profiles.yml
+*.p8
+*.pem
+.DS_Store
+.user.yml
